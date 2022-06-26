@@ -1,0 +1,71 @@
+이 Dockerfile 은 ubuntu 위에 java 11 과 maven 을 설치하고
+hello world 를 출력하는 java 프로젝트 git을 다운받아
+maven 을 이용하여 java 프로그램을 빌드합니다.
+
+
+개행문자의 경우 CRLF 면 에러가 발생합니다.
+반드시 모든 파일이 LF 인 것을 확인해야 합니다.
+
+
+Command 설명
+0. Dockerfile 과 run.sh 가 존재하는 디렉터리에서 시작.
+
+1. Dockerfile 로 부터 image 를 생성한다.
+	docker build -t cse364/project_image:1.0 .
+	
+		소속 / 이름 : 버전 , 이름만 적어도 무방하다
+		-t , image 에 태그 설정, 이름 설정
+		. , 현재 디렉터리에 존재하는 Dockerfile 을 이용한다
+		처음 실행한다면 800초 가량의 시간 소비
+
+2. image 로 부터 Container 를 생성한다. 
+	docker run -it --name containerName cse364/project_image:1.0
+
+		-it , interactive 모드
+		--name , container 의 이름을 설정
+	
+3. 자동으로 ubuntu container 가 실행된다
+	
+4. run.sh 파일 내 명령어를 실행하여, 원하는 명령어를 실행시킨다.
+	./run.sh
+
+		처음 maven 으로 compile, build, install 을 실행할 때는 다운로드 받는 것이 많다. 1-2분 소요
+		이후에 다운로드 없이 빌드를 진행하고 싶다면 해당 container 를 닫지 않아야 다운로드 받은 것들이 사라지지 않는다.
+		해당 container 가 한번이라도 exit 되면 
+	
+5. 해당 container 에서 나올때는 Ctrl + p, Ctrl + q 를 누른다
+	아니면 exit 입력
+		인터넷에서는 container 가 닫힌다는 데, 안 닫히네요..??
+
+6. 방금 생성한 container 는 아직 살아있다, 존재한다.
+	docker ps 
+
+		생성한 containerName 이 실행중 임을 알 수 있다
+
+	아니면 컴퓨터에 설치된 docker 아이콘 이용 => dashboard => container/App 에서 실행중인 container 를 확인할 수 있다.
+
+7. 나왔던 continaer 에 다시 접속할 때는
+	docker exec -it containerName /bin/bash
+
+		container 가 닫혔다면
+		docker start container 
+		이후 다시 docker exec ~
+
+8. java 코드 수정 후, 다시 빌드할 때는 반드시 pom.xml, src 디렉토리 가 존재하는 디렉토리에서 실행
+	mvn install
+
+		다운로드를 이미 진행했기 때문에 더이상 진행되지 않는다.
+
+	예를 들면	
+	java -jar target/gs-maven-0.1.0.jar
+
+
+9. 한번 container 를 설치한 후엔 Docker dashboard 에서 아이콘을 이용하여 손쉽게 실행과 정지, CLI 접근이 가능하다.
+
+10. 이제 프로그램이 돌아가는 환경을 마련하였다.
+
+11. 이후 CSE364-Group18 git 에 원하는 파일을 넣은 다음에
+
+12. container 내의 CSE364-Group18 디렉토리내에서 git clone 을 통해 내려받고 나서 maven 으로 실행할 수 있고
+
+13. 반면에 container 내에서 git push 도 가능하다

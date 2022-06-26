@@ -1,0 +1,3989 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container" th:each="genre, i: ${movieList}">
+        <span th:if="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre">Top 10</span>
+        </span>
+        <span th:unless="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre" th:text="${genreNames[i.index]}"></span>
+        </span>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${genre}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("myDIV");
+        var btns = header.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+</body>
+</html>
+document.getElementById("home").focus();
+
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+
+function openForm() {
+    document.getElementById("titleForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("titleForm").style.display = "none";
+}
+
+function isInteger(n) {
+    return !isNaN(parseInt(n)) && isFinite(n);
+}
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search"/>
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on You</span>
+        <div class="dummy"></div>
+        <form class="recommend" action="/users/recommendations.html" method="GET">
+            <span>Gender: </span>
+            <select class="select-gender" name="gender">
+                <option value="" selected="selected">Not select</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <span>Age: </span>
+            <select class="select-age" name="age">
+                <option value="" selected="selected">Not select</option>
+                <option value="1">1 ~ 17</option>
+                <option value="18">18 ~ 24</option>
+                <option value="25">25 ~ 34</option>
+                <option value="35">35 ~ 44</option>
+                <option value="45">45 ~ 49</option>
+                <option value="50">50 ~ 55</option>
+                <option value="56">56 ~</option>
+            </select>
+            <span>Occupation: </span>
+            <select class="select-occupation" name="occupation">
+                <option value="" selected="selected">Not select</option>
+                <option value="Other">Other</option>
+                <option value="Academic/Educator">Academic/Educator</option>
+                <option value="Artist">Artist</option>
+                <option value="Clerical/Admin">Clerical/Admin</option>
+                <option value="College/Grad Student">College/Grad Student</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Doctor/Health Care">Doctor/Health Care</option>
+                <option value="Executive/Managerial">Executive/Managerial</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Homemaker">Homemaker</option>
+                <option value="K-12 Student">K-12 Student</option>
+                <option value="Lawyer">Lawyer</option>
+                <option value="Programmer">Programmer</option>
+                <option value="Retired">Retired</option>
+                <option value="Sales/Marketing">Sales/Marketing</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Technician/Engineer">Technician/Engineer</option>
+                <option value="Tradesman/Craftsman">Tradesman/Craftsman</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Writer">Writer</option>
+            </select>
+            <span>Genres: </span>
+            <select class="multiple-select-genres" name="genres" multiple="multiple">
+                <option value="" selected="selected">Not select</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Film-Noir">Film-Noir</option>
+                <option value="Horror">Horror</option>
+                <option value="Musical">Musical</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+                <option value="War">War</option>
+                <option value="Western">Western</option>
+            </select>
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        $('.select-gender').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-age').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-occupation').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.multiple-select-genres').select2({
+            allowClear: true,
+            width: "15%"
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by User</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title">Recommended Top 10</span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by User</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title">Recommended Top 10</span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title" th:text="'Recommended Top ' + ${limit} + ' based on ' + ${title} + ' (' + ${year} + ')'"></span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommend by Movie</title>
+  <script src="../main.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="navbar" id="topnav">
+    <div>
+  <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+      <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+      <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+      <button class="drop-button">Recommend
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="/users.html">By User</a>
+        <a href="/movies.html">By Title</a>
+      </div>
+    </div>
+    <div class="search-container">
+      <form action="/search.html">
+        <input type="text" placeholder="Titles, people, genres" name="search">
+        <button type="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="dummy"></div>
+
+  <div class="container">
+    <span class="title" th:text="'Which movie do you want to choose?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+      <div class="in-container" th:each="movie: ${movies}">
+        <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+          <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+        </a>
+        <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title" th:text="'Recommended Top ' + ${limit} + ' based on ' + ${title} + ' (' + ${year} + ')'"></span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'Which movie do you want to choose?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container" th:each="movie: ${movies}">
+            <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+                <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+            </a>
+            <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'We can\'t find ' + ${title} + '. Do you want to try recommendation again?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container">
+            <a href="/movies.html" class="title-again">Recommend Again</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'There is no ' + ${title} + ' released in ' + ${year} + ', but here is ' + ${title} + ' released in different year'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container" th:each="movie: ${movies}">
+            <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+                <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+            </a>
+            <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET" required>
+            <label for="title">Title:</label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title">
+            <label for="year">Year:</label>
+            <input class="field" type="text" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit:</label>
+            <input class="field" type="text" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET">
+            <label for="title">Title: </label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title" required>
+            <label for="year">Year: </label>
+            <input class="field" type="number" min="1900" max="2021" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit: </label>
+            <input class="field" type="number" min="1" max="100" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
+document.getElementById("home").focus();
+
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+
+function openForm() {
+    document.getElementById("titleForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("titleForm").style.display = "none";
+}
+
+function validateForm() {
+    const x = document.forms["titleForm"]["title"].value;
+    if (x === "") {
+        alert("Title must be filled out");
+        return false;
+    }
+}
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container" th:each="genre, i: ${movieList}">
+        <span th:if="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre">Top 10</span>
+        </span>
+        <span th:unless="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre" th:text="${genreNames[i.index]}"></span>
+        </span>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${genre}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("myDIV");
+        var btns = header.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+</body>
+</html>
+document.getElementById("home").focus();
+
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+
+function openForm() {
+    document.getElementById("titleForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("titleForm").style.display = "none";
+}
+
+function validateForm() {
+    const x = document.forms["titleForm"]["title"].value;
+    if (x === "") {
+        alert("Title must be filled out");
+        return false;
+    }
+}
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search"/>
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on You</span>
+        <div class="dummy"></div>
+        <form class="recommend" action="/users/recommendations.html" method="GET">
+            <span>Gender:</span>
+            <select class="select-gender" name="gender">
+                <option value="">Please choose your gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <span>Age:</span>
+            <select class="select-age" name="age">
+                <option value="">Please choose your age</option>
+                <option value="1">1 ~ 17</option>
+                <option value="18">18 ~ 24</option>
+                <option value="25">25 ~ 34</option>
+                <option value="35">35 ~ 44</option>
+                <option value="45">45 ~ 49</option>
+                <option value="50">50 ~ 55</option>
+                <option value="56">56+</option>
+            </select>
+            <span>Occupation:</span>
+            <select class="select-occupation" name="occupation">
+                <option value="">Please choose your occupation</option>
+                <option value="Other">Other</option>
+                <option value="Academic/Educator">Academic/Educator</option>
+                <option value="Artist">Artist</option>
+                <option value="Clerical/Admin">Clerical/Admin</option>
+                <option value="College/Grad Student">College/Grad Student</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Doctor/Health Care">Doctor/Health Care</option>
+                <option value="Executive/Managerial">Executive/Managerial</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Homemaker">Homemaker</option>
+                <option value="K-12 Student">K-12 Student</option>
+                <option value="Lawyer">Lawyer</option>
+                <option value="Programmer">Programmer</option>
+                <option value="Retired">Retired</option>
+                <option value="Sales/Marketing">Sales/Marketing</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Technician/Engineer">Technician/Engineer</option>
+                <option value="Tradesman/Craftsman">Tradesman/Craftsman</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Writer">Writer</option>
+            </select>
+            <span>Genres:</span>
+            <select class="multiple-select-genres" name="genres" multiple>
+                <option value="">Please choose genre(s)</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Film-Noir">Film-Noir</option>
+                <option value="Horror">Horror</option>
+                <option value="Musical">Musical</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+                <option value="War">War</option>
+                <option value="Western">Western</option>
+            </select>
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        $('.select-gender').select2({
+            placeholder: "Please choose your gender",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-age').select2({
+            placeholder: "Please choose your age",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-occupation').select2({
+            placeholder: "Please choose your occupation",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.multiple-select-genres').select2({
+            placeholder: "Please choose genre(s)",
+            allowClear: true,
+            width: "15%"
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by User</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title">Recommended Top 10</span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by User</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title">Recommended Top 10</span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container" th:each="genre, i: ${movieList}">
+        <span th:if="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre">Top 10</span>
+        </span>
+        <span th:unless="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre" th:text="${genreNames[i.index]}"></span>
+        </span>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${genre}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("myDIV");
+        var btns = header.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search"/>
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on You</span>
+        <div class="dummy"></div>
+        <form class="recommend" action="/users/recommendations.html" method="GET">
+            <span>Gender:</span>
+            <select class="select-gender" name="gender">
+                <option value="">Please choose your gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <span>Age:</span>
+            <select class="select-age" name="age">
+                <option value="">Please choose your age</option>
+                <option value="1">1 ~ 17</option>
+                <option value="18">18 ~ 24</option>
+                <option value="25">25 ~ 34</option>
+                <option value="35">35 ~ 44</option>
+                <option value="45">45 ~ 49</option>
+                <option value="50">50 ~ 55</option>
+                <option value="56">56+</option>
+            </select>
+            <span>Occupation:</span>
+            <select class="select-occupation" name="occupation">
+                <option value="">Please choose your occupation</option>
+                <option value="Other">Other</option>
+                <option value="Academic/Educator">Academic/Educator</option>
+                <option value="Artist">Artist</option>
+                <option value="Clerical/Admin">Clerical/Admin</option>
+                <option value="College/Grad Student">College/Grad Student</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Doctor/Health Care">Doctor/Health Care</option>
+                <option value="Executive/Managerial">Executive/Managerial</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Homemaker">Homemaker</option>
+                <option value="K-12 Student">K-12 Student</option>
+                <option value="Lawyer">Lawyer</option>
+                <option value="Programmer">Programmer</option>
+                <option value="Retired">Retired</option>
+                <option value="Sales/Marketing">Sales/Marketing</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Technician/Engineer">Technician/Engineer</option>
+                <option value="Tradesman/Craftsman">Tradesman/Craftsman</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Writer">Writer</option>
+            </select>
+            <span>Genres:</span>
+            <select class="multiple-select-genres" name="genres" multiple>
+                <option value="">Please choose genre(s)</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Film-Noir">Film-Noir</option>
+                <option value="Horror">Horror</option>
+                <option value="Musical">Musical</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+                <option value="War">War</option>
+                <option value="Western">Western</option>
+            </select>
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        $('.select-gender').select2({
+            placeholder: "Please choose your gender",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-age').select2({
+            placeholder: "Please choose your age",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-occupation').select2({
+            placeholder: "Please choose your occupation",
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.multiple-select-genres').select2({
+            placeholder: "Please choose genre(s)",
+            allowClear: true,
+            width: "15%"
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title" th:text="'Recommended Top ' + ${limit} + ' based on ' + ${title} + ' (' + ${year} + ')'"></span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommend by Movie</title>
+  <script src="../main.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="navbar" id="topnav">
+    <div>
+  <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+      <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+      <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+      <button class="drop-button">Recommend
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="/users.html">By User</a>
+        <a href="/movies.html">By Title</a>
+      </div>
+    </div>
+    <div class="search-container">
+      <form action="/search.html">
+        <input type="text" placeholder="Titles, people, genres" name="search">
+        <button type="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="dummy"></div>
+
+  <div class="container">
+    <span class="title" th:text="'Which movie do you want to choose?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+      <div class="in-container" th:each="movie: ${movies}">
+        <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+          <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+        </a>
+        <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommend by Movie</title>
+  <script src="../main.js"></script>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="navbar" id="topnav">
+    <div>
+  <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+      <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+      <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+      <button class="drop-button">Recommend
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="/users.html">By User</a>
+        <a href="/movies.html">By Title</a>
+      </div>
+    </div>
+    <div class="search-container">
+      <form action="/search.html">
+        <input type="text" placeholder="Titles, people, genres" name="search">
+        <button type="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="dummy"></div>
+
+  <div class="container">
+    <span class="title" th:text="'Which movie do you want to choose?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+      <div class="in-container" th:each="movie: ${movies}">
+        <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+          <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+        </a>
+        <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title" th:text="'Recommended Top ' + ${limit} + ' based on ' + ${title} + ' (' + ${year} + ')'"></span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET" required>
+            <label for="title">Title:</label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title">
+            <label for="year">Year:</label>
+            <input class="field" type="text" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit:</label>
+            <input class="field" type="text" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+<!--            <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET" required>
+            <label for="title">Title:</label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title">
+            <label for="year">Year:</label>
+            <input class="field" type="text" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit:</label>
+            <input class="field" type="text" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
+package cse364.group18.dto;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class UserProfileInputDtoTest {
+
+    @Test
+    public void userCreateTest() {
+        String gender = "F";
+        String age = "56";
+        String occupationName = "Artist";
+        String genres = "Action";
+
+        List<String> genreList = new ArrayList<>();
+        genreList.add("Action");
+
+
+        UserProfileInputDto inputDto = new UserProfileInputDto(gender, age, occupationName, genres);
+        System.out.println(inputDto.getGender());
+        System.out.println(inputDto.getAgeGroup());
+        System.out.println(inputDto.getOccupationNum());
+        System.out.println(inputDto.getGenres());
+
+        Assertions.assertEquals(inputDto.getGender(), "F");
+        Assertions.assertEquals(inputDto.getAgeGroup(), 56);
+        Assertions.assertEquals(inputDto.getOccupationNum(), 2);
+
+    }
+}
+
+package cse364.group18.service.util;
+import cse364.group18.model.User;
+import cse364.group18.service.core.UserSimilarityScorer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
+
+public class UserSimilarityScorerTest {
+    UserSimilarityScorer userSimilarityScorer;
+
+    public UserSimilarityScorerTest() {
+        String gender = "F";
+        int age = 56;
+        int occupationNum = 1;
+        userSimilarityScorer = new UserSimilarityScorer(gender, age, occupationNum);
+    }
+
+    @Test
+    public void zeroMatchTest() {
+        User user = new User(12L, "M",  16, 20, "12134");
+        int similarityScore = userSimilarityScorer.getScore(user);
+        Assertions.assertEquals(similarityScore, 0);
+    }
+
+    @Test
+    public void oneMatchTest() {
+        User user = new User(12L, "F",  16, 20, "12134");
+        int similarityScore = userSimilarityScorer.getScore(user);
+        Assertions.assertEquals(similarityScore, 1);
+    }
+
+    @Test
+    public void twoMatchTest() {
+        User user = new User(12L, "F",  56, 20, "12134");
+        int similarityScore = userSimilarityScorer.getScore(user);
+        Assertions.assertEquals(similarityScore, 2);
+    }
+
+    @Test
+    public void threeMatchTest() {
+        User user = new User(12L, "F",  56, 1, "12134");
+        int similarityScore = userSimilarityScorer.getScore(user);
+        Assertions.assertEquals(similarityScore, 3);
+    }
+
+}
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container" th:each="genre, i: ${movieList}">
+        <span th:if="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre">Top 10</span>
+        </span>
+        <span th:unless="${genreNames[i.index].length()} == 0">
+            <span class="movie-genre" th:text="${genreNames[i.index]}"></span>
+        </span>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${genre}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        // Add active class to the current button (highlight it)
+        var header = document.getElementById("myDIV");
+        var btns = header.getElementsByClassName("btn");
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+            });
+        }
+    </script>
+</body>
+</html>
+document.getElementById("home").focus();
+
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+
+function openForm() {
+    document.getElementById("titleForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("titleForm").style.display = "none";
+}
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search"/>
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on You</span>
+        <div class="dummy"></div>
+        <form class="recommend" action="/users/recommendations.html" method="GET">
+            <span>Gender: </span>
+            <select class="select-gender" name="gender">
+                <option value="" selected="selected">Not select</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <span>Age: </span>
+            <select class="select-age" name="age">
+                <option value="" selected="selected">Not select</option>
+                <option value="1">1 ~ 17</option>
+                <option value="18">18 ~ 24</option>
+                <option value="25">25 ~ 34</option>
+                <option value="35">35 ~ 44</option>
+                <option value="45">45 ~ 49</option>
+                <option value="50">50 ~ 55</option>
+                <option value="56">56 ~</option>
+            </select>
+            <span>Occupation: </span>
+            <select class="select-occupation" name="occupation">
+                <option value="" selected="selected">Not select</option>
+                <option value="Other">Other</option>
+                <option value="Academic/Educator">Academic/Educator</option>
+                <option value="Artist">Artist</option>
+                <option value="Clerical/Admin">Clerical/Admin</option>
+                <option value="College/Grad Student">College/Grad Student</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Doctor/Health Care">Doctor/Health Care</option>
+                <option value="Executive/Managerial">Executive/Managerial</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Homemaker">Homemaker</option>
+                <option value="K-12 Student">K-12 Student</option>
+                <option value="Lawyer">Lawyer</option>
+                <option value="Programmer">Programmer</option>
+                <option value="Retired">Retired</option>
+                <option value="Sales/Marketing">Sales/Marketing</option>
+                <option value="Scientist">Scientist</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Technician/Engineer">Technician/Engineer</option>
+                <option value="Tradesman/Craftsman">Tradesman/Craftsman</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Writer">Writer</option>
+            </select>
+            <span>Genres: </span>
+            <select class="multiple-select-genres" name="genres" multiple="multiple">
+                <option value="" selected="selected">Not select</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Film-Noir">Film-Noir</option>
+                <option value="Horror">Horror</option>
+                <option value="Musical">Musical</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Thriller">Thriller</option>
+                <option value="War">War</option>
+                <option value="Western">Western</option>
+            </select>
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+
+        $('.select-gender').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-age').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.select-occupation').select2({
+            allowClear: true,
+            width: "15%"
+        });
+
+        $('.multiple-select-genres').select2({
+            allowClear: true,
+            width: "15%"
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by User</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title">Recommended Top 10</span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+        <span class="title" th:text="'Recommended Top ' + ${limit} + ' based on ' + ${title} + ' (' + ${year} + ')'"></span>
+        <div class="dummy"></div>
+        <div class="out-container">
+            <div class="in-container" th:each="movie: ${movies}">
+                <a th:href="${movie.getImdb()}" class="poster">
+                    <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+                </a>
+                <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'Which movie do you want to choose?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container" th:each="movie: ${movies}">
+            <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+                <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+            </a>
+            <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <!--    <a href="/index.html" class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" width="100px"></a>-->
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'We can\'t find ' + ${title} + '. Do you want to try recommendation again?'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container">
+            <a href="/movies.html" class="title-again">Recommend Again</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'There is no ' + ${title} + ' released in ' + ${year} + ', but here is ' + ${title} + ' released in different year'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container" th:each="movie: ${movies}">
+            <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+                <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+            </a>
+            <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET">
+            <label for="title">Title: </label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title" required>
+            <label for="year">Year: </label>
+            <input class="field" type="number" min="1900" max="2021" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit: </label>
+            <input class="field" type="number" min="1" max="100" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
+package cse364.group18.dto;
+
+import cse364.group18.exception.*;
+import cse364.group18.model.Movie;
+import cse364.group18.repository.MovieRepository;
+
+import java.util.List;
+
+
+public class MovieTitleInputDto {
+    private String title;
+    private final int year;
+    private final int limit;
+    private final MovieRepository movieRepository;
+
+    public MovieTitleInputDto(String title, int year, int limit, MovieRepository movieRepository) {
+        this.title = title;
+        this.year = year;
+        this.limit = limit;
+        this.movieRepository = movieRepository;
+        checkValidity();
+    }
+
+    public String getTitle() { return title; }
+
+    public int getYear() { return year; }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    private void checkValidity() {
+        checkValidLimit(limit);
+        checkValidTitle(title, year);
+        checkValidYear(title, year);
+    }
+
+    private void checkValidTitle(String title, int year) throws NotFoundTitleException {
+        /*
+            Is there at least one movie?
+         */
+        List<Movie> movieList = movieRepository.findByTitleIgnoreCase(title);
+
+        if (movieList.isEmpty()){
+            throw new NotFoundTitleException("Invalid title: ", title);
+        }
+
+        if (movieList.size() > 1 && year == -1) {
+            throw new NonUniqueTitleException("There are the same-titled movies: ", title);
+        }
+        // Change case insensitive title to DB format.
+        this.title = movieList.get(0).getTitle();
+    }
+
+    private void checkValidYear(String title, int year) throws InvalidInputException, NotFoundYearException {
+        // default year input value is -1
+        if (year != -1 && year < 1901) {
+            throw new InvalidInputException("User input 'year' should be larger 1900: ", Integer.toString(year));
+        }
+
+        if (year != -1 && movieRepository.findByTitleAndYear(title, String.valueOf(year)).isEmpty()) {
+            throw new NotFoundYearException("There is no conditions-matched movie: ", title + " (" + year + ')');
+        }
+    }
+
+    private void checkValidLimit(int limit) throws InvalidInputException {
+        if (limit != -1 && limit < 0 || limit > 100) {
+            throw new InvalidInputException("Invalid limit: ", Integer.toString(limit));
+        }
+    }
+}
+
+package cse364.group18.dto;
+
+import cse364.group18.exception.InvalidInputException;
+
+import java.util.*;
+
+
+public class UserProfileInputDto {
+    /*
+        1. All input arguments should be String.
+        2. Any argument can be empty String.
+        3. Genre input String is separable by ',' delimiter.
+    */
+
+    private final HashMap<String, Integer> VALID_OCCUPATIONS;
+    private final List<String> VALID_GENRES;
+
+    private final String gender;
+    private final String age;
+    private final String occupationName;
+    private final String genres;
+
+    public UserProfileInputDto(String gender, String age, String occupationName, String genres) {
+        VALID_OCCUPATIONS = new HashMap<>(){{
+            put("Other", 0);
+            put("Academic/Educator", 1);
+            put("Artist", 2);
+            put("Clerical/Admin", 3);
+            put("College/Grad Student", 4);
+            put("Customer Service", 5);
+            put("Doctor/Health Care", 6);
+            put("Executive/Managerial", 7);
+            put("Farmer", 8);
+            put("Homemaker", 9);
+            put("K-12 Student", 10);
+            put("Lawyer", 11);
+            put("Programmer", 12);
+            put("Retired", 13);
+            put("Sales/Marketing", 14);
+            put("Scientist", 15);
+            put("Self-Employed", 16);
+            put("Technician/Engineer", 17);
+            put("Tradesman/Craftsman", 18);
+            put("Unemployed", 19);
+            put("Writer", 20);
+            put("", 21);
+        }};
+        String[] GENRES = new String[] {
+                "Action", "Adventure", "Animation", "Comedy",
+                "Crime", "Documentary", "Drama", "Fantasy",
+                "Film-Noir", "Horror", "Musical", "Mystery",
+                "Romance", "Sci-Fi", "Thriller", "War",
+                "Western", ""
+        };
+
+        VALID_GENRES = Arrays.asList(GENRES);
+        this.gender = gender;
+        this.age = age;
+        this.occupationName = occupationName;
+        this.genres = genres;
+        checkValidity();
+
+    }
+
+    public String getGender() {
+        return gender.toUpperCase();
+    }
+    public int getAgeGroup() {
+        int ageGroup = -1;
+
+        if (age.length() > 0) {
+            int age_input = Integer.parseInt(age);
+
+            if (age_input < 18) {
+                ageGroup = 1;
+            } else if (age_input <= 24) {
+                ageGroup = 18;
+            } else if (age_input <= 34) {
+                ageGroup = 25;
+            } else if (age_input <= 44) {
+                ageGroup = 35;
+            } else if (age_input <= 49) {
+                ageGroup = 45;
+            } else if (age_input <= 55) {
+                ageGroup = 50;
+            } else {
+                ageGroup = 56;
+            }
+        }
+        return ageGroup;
+    }
+
+    public int getOccupationNum() {
+        /*
+            If occupation input is empty string, 21 is returned.
+         */
+        return VALID_OCCUPATIONS.get(occupationName);
+    }
+    public List<String> getGenres() {
+        /*
+            If genre input is empty string, empty list is returned.
+         */
+        List<String> genreList;
+        if (genres.length() > 0)
+            genreList = Arrays.asList(genres.split(","));
+        else
+            genreList = Collections.emptyList();
+
+        return genreList;
+    }
+
+    private void checkValidity() throws InvalidInputException {
+        checkValidGender(gender);
+        checkValidAge(age);
+        checkValidOccupationName(occupationName);
+        String[] genreList = genres.split(",");
+
+        for (String genre : genreList) {
+            checkValidGenre(genre);
+        }
+    }
+
+    private void checkValidGender(String gender) throws InvalidInputException {
+        if (gender.length() == 0) {
+            return;
+        }
+
+        String Gender = gender.toUpperCase();
+
+        if (!(Gender.equals("M") || Gender.equals("F")))
+            throw new InvalidInputException("Invalid gender: ", gender);
+    }
+
+    private void checkValidAge(String age) throws InvalidInputException {
+        /*
+            1. Empty age is allowed.
+            2. Age >= 0
+         */
+        int numAge;
+        if (age.length() == 0) {
+            return;
+        }
+
+        try {
+            numAge = Integer.parseInt(age);
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Invalid format: ", age);
+        }
+
+        if (numAge < 0) {
+            throw new InvalidInputException("Invalid age range: ", age);
+        }
+    }
+
+    private void checkValidOccupationName(String occupationName) throws InvalidInputException {
+        if (occupationName.length() == 0) {
+            return;
+        }
+
+        if (!VALID_OCCUPATIONS.containsKey(occupationName)) {
+            throw new InvalidInputException("Invalid occupation: ", occupationName);
+        }
+    }
+
+    private void checkValidGenre(String genre) {
+        if (genre.length() == 0) {
+            return;
+        }
+
+        if (!VALID_GENRES.contains(genre)) {
+            throw new InvalidInputException("Invalid genre: ", genre);
+        }
+    }
+}
+
+
+
+
+package cse364.group18.dto;
+
+import java.util.List;
+
+
+public class MovieDto {
+
+    private final String title;
+    private final String year;
+    private final List<String> genres;
+    private final String imdb;
+    private final String poster;
+
+    public MovieDto(String title, String year, List<String> genres, String imdb, String poster) {
+        this.title = title;
+        this.year = year;
+        this.genres = genres;
+        this.imdb = imdb;
+        this.poster = poster;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public String getImdb() {
+        return imdb;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+}
+package cse364.group18.repository;
+
+import cse364.group18.model.Movie;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@Repository
+public interface MovieRepository extends MongoRepository<Movie, Long> {
+    Movie findByMovieId(Long movieId);
+    List<Movie> findByTitleIgnoreCase(String title);
+    Optional<Movie> findByTitleAndYear(String title, String year);
+    List<Movie> findByGenresIn(List<String> genres);
+}
+package cse364.group18.repository;
+
+import cse364.group18.model.Rating;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+
+@Repository
+public interface RatingRepository extends MongoRepository<Rating, Long> {
+    List<Rating> findAll();
+    List<Rating> findByMovieId(Long movieId);
+}
+package cse364.group18.repository;
+
+import cse364.group18.exception.NotFoundException;
+import cse364.group18.model.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.List;
+
+
+@Repository
+public class UserRepositoryAdapter {
+    UserRepository userRepository;
+
+    List<User> userList;
+    HashMap<Long, User> userMap = new HashMap<>();
+
+    public UserRepositoryAdapter(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.userList = userRepository.findAll();
+    }
+
+    public List<User> findAll() {
+        if (this.userList.isEmpty()){
+            this.userList = userRepository.findAll();
+            for (User user : this.userList){
+                this.userMap.putIfAbsent(user.getUserId(), user);
+            }
+        }
+        return this.userList;
+    }
+
+    public User findByUserId(Long userId) throws NotFoundException {
+        if (this.userMap.isEmpty())
+            findAll();
+
+        if (this.userMap.containsKey(userId)) {
+            return this.userMap.get(userId);
+        } else {
+            throw new NotFoundException("Not found user id: ", userId.toString());
+        }
+    }
+}
+
+
+package cse364.group18.repository;
+
+import cse364.group18.exception.NotFoundException;
+import cse364.group18.model.Rating;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+@Repository
+public class RatingRepositoryAdapter {
+    // To reduce DB access time, rating data are cached.
+    RatingRepository ratingRepository;
+    List<Rating> ratingList;
+    HashMap<Long, List<Rating>> ratingMap = new HashMap<>();
+
+    public RatingRepositoryAdapter(RatingRepository ratingRepository) {
+        this.ratingRepository = ratingRepository;
+        this.ratingList = ratingRepository.findAll();
+    }
+
+    public List<Rating> findAll() {
+        if (this.ratingList.isEmpty())
+            this.ratingList = ratingRepository.findAll();
+
+        for (Rating rating : this.ratingList) {
+            Long userId = rating.getUserId();
+
+            if (ratingMap.containsKey(userId)) {
+                List<Rating> rList = ratingMap.get(userId);
+            } else {
+                List<Rating> rList = new ArrayList<>();
+                rList.add(rating);
+                ratingMap.put(userId, rList);
+            }
+        }
+
+        return this.ratingList;
+    }
+
+    public List<Rating> findByUserId(Long userId) throws NotFoundException {
+        if (this.ratingMap.isEmpty())
+            findAll();
+
+        if (this.ratingMap.containsKey(userId)) {
+            return this.ratingMap.get(userId);
+        } else {
+            throw new NotFoundException("Not found user id: ", userId.toString());
+        }
+    }
+}
+
+package cse364.group18.repository;
+
+import cse364.group18.model.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface UserRepository extends MongoRepository<User, Long> {
+
+}
+package cse364.group18.config;
+
+import cse364.group18.model.Rating;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+
+
+@Configuration
+@EnableBatchProcessing
+public class RatingBatchConfig {
+
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final MongoTemplate mongoTemplate;
+
+    @Autowired
+    public RatingBatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Bean
+    public Job ratingUser() {
+        return jobBuilderFactory.get("ratingUser")
+                .incrementer(new RunIdIncrementer())
+                .start(ratingStep1())
+                .build();
+    }
+
+    @Bean
+    public Step ratingStep1() {
+        return stepBuilderFactory.get("ratingStep1")
+                .<Rating, Rating>chunk(100)
+                .reader(ratingReader())
+                .writer(ratingWriter())
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemReader<Rating> ratingReader() {
+        FlatFileItemReader<Rating> reader = new FlatFileItemReader<>();
+        reader.setResource(new ClassPathResource("/data/ratings.csv"));
+        reader.setEncoding("UTF-8");
+        reader.setLineMapper(new DefaultLineMapper<>() {{
+            setLineTokenizer(new DelimitedLineTokenizer() {{
+                setNames("userId", "movieId", "score", "timeStamp");
+            }});
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
+                setTargetType(Rating.class);
+            }});
+        }});
+        return reader;
+    }
+
+    @Bean
+    public MongoItemWriter<Rating> ratingWriter() {
+        MongoItemWriter<Rating> writer = new MongoItemWriter<>();
+        writer.setTemplate(mongoTemplate);
+        writer.setCollection("rating");
+        return writer;
+    }
+}
+package cse364.group18.config;
+
+import cse364.group18.model.Movie;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+
+import java.util.Arrays;
+
+
+@Configuration
+@EnableBatchProcessing
+public class MovieBatchConfig {
+
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final MongoTemplate mongoTemplate;
+
+    @Autowired
+    public MovieBatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Bean
+    public Job readMovie() {
+        return jobBuilderFactory.get("readMovie")
+                .incrementer(new RunIdIncrementer())
+                .start(movieStep1())
+                .build();
+    }
+
+    @Bean
+    public Step movieStep1() {
+        return stepBuilderFactory.get("movieStep1")
+                .<Movie, Movie>chunk(100)
+                .reader(movieReader())
+                .writer(movieWriter())
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemReader<Movie> movieReader() {
+        FlatFileItemReader<Movie> reader = new FlatFileItemReader<>();
+        reader.setResource(new ClassPathResource("/data/movies.csv"));
+        reader.setEncoding("UTF-8");
+        reader.setLineMapper(new DefaultLineMapper<>() {{
+            setLineTokenizer(new DelimitedLineTokenizer() {{
+                setNames("movieId", "title", "year", "rated", "released", "runtime", "genres",
+                        "director", "writer", "actors", "plot", "language", "country",
+                        "poster", "imdbRating", "imdbVotes", "imdbId");
+            }});
+            setFieldSetMapper(new MovieMapper());
+        }});
+        return reader;
+    }
+
+    @Bean
+    public MongoItemWriter<Movie> movieWriter() {
+        MongoItemWriter<Movie> writer = new MongoItemWriter<>();
+        writer.setTemplate(mongoTemplate);
+        writer.setCollection("movie");
+        return writer;
+    }
+
+    public static class MovieMapper implements FieldSetMapper<Movie> {
+
+        @Override
+        public Movie mapFieldSet(FieldSet fieldSet) {
+            Movie movie = new Movie();
+            movie.setMovieId(fieldSet.readLong("movieId"));
+            movie.setTitle(fieldSet.readString("title"));
+            movie.setYear(fieldSet.readString("year"));
+            movie.setRated(fieldSet.readString("rated"));
+            movie.setReleased(fieldSet.readString("released"));
+            movie.setRuntime(fieldSet.readString("runtime"));
+            movie.setGenres(Arrays.asList((fieldSet.readString("genres").split(", "))));
+            movie.setDirector(fieldSet.readString("director"));
+            movie.setWriter(fieldSet.readString("writer"));
+            movie.setActors(Arrays.asList((fieldSet.readString("actors").split(", "))));
+            movie.setPlot(fieldSet.readString("plot"));
+            movie.setLanguage(fieldSet.readString("language"));
+            movie.setCountry(fieldSet.readString("country"));
+            movie.setPoster(fieldSet.readString("poster"));
+            movie.setImdbRating(fieldSet.readString("imdbRating"));
+            movie.setImdbVotes(fieldSet.readString("imdbVotes").replace(",", ""));
+            movie.setImdbId(fieldSet.readString("imdbId"));
+            return movie;
+        }
+    }
+}
+package cse364.group18.config;
+
+import cse364.group18.model.User;
+
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+
+
+@Configuration
+@EnableBatchProcessing
+public class UserBatchConfig {
+
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final MongoTemplate mongoTemplate;
+
+    @Autowired
+    public UserBatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, MongoTemplate mongoTemplate) {
+        this.jobBuilderFactory = jobBuilderFactory;
+        this.stepBuilderFactory = stepBuilderFactory;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Bean
+    public Job readUser() {
+        return jobBuilderFactory.get("readUser")
+                .incrementer(new RunIdIncrementer())
+                .start(userStep1())
+                .build();
+    }
+
+    @Bean
+    public Step userStep1() {
+        return stepBuilderFactory.get("userStep1")
+                .<User, User>chunk(100)
+                .reader(userReader())
+                .writer(userWriter())
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemReader<User> userReader() {
+        FlatFileItemReader<User> reader = new FlatFileItemReader<>();
+        reader.setResource(new ClassPathResource("/data/users.csv"));
+        reader.setEncoding("UTF-8");
+        reader.setLineMapper(new DefaultLineMapper<>() {{
+            setLineTokenizer(new DelimitedLineTokenizer() {{
+                setNames("id", "gender", "ageGroup", "occupation", "zipcode");
+            }});
+            setFieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
+                setTargetType(User.class);
+            }});
+        }});
+        return reader;
+    }
+
+    @Bean
+    public MongoItemWriter<User> userWriter() {
+        MongoItemWriter<User> writer = new MongoItemWriter<>();
+        writer.setTemplate(mongoTemplate);
+        writer.setCollection("user");
+        return writer;
+    }
+}
+package cse364.group18.controller;
+
+import cse364.group18.dto.*;
+import cse364.group18.exception.*;
+import cse364.group18.model.Movie;
+import cse364.group18.repository.MovieRepository;
+import cse364.group18.service.RecommendationService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.*;
+
+
+@Controller
+public class PageController {
+
+    private final List<String> GENRES = new ArrayList<>(Arrays.asList(
+            "", "Action", "Animation", "Crime", "Drama",
+            "Horror", "Romance", "Sci-Fi", "Thriller", "War"
+    ));
+
+    private final MovieRepository movieRepository;
+    private final RecommendationService recommendationService;
+
+    @Autowired
+    public PageController(MovieRepository movieRepository, RecommendationService recommendationService) {
+        this.movieRepository = movieRepository;
+        this.recommendationService = recommendationService;
+    }
+
+    @GetMapping("/index.html")
+    public ModelAndView index(Model model) {
+        List<List<MovieDto>> movies = new ArrayList<>();
+
+        try {
+            for (String genre : GENRES) {
+                UserProfileInputDto inputDto = new UserProfileInputDto("", "", "", genre);
+                List<MovieDto> movie = recommendationService.recommendByUserProfile(inputDto);
+                movies.add(movie);
+            }
+            model.addAttribute("genreNames", GENRES);
+            model.addAttribute("movieList", movies);
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index.html");
+        return modelAndView;
+    }
+
+    @GetMapping("/users/recommendations.html")
+    public ModelAndView recommendByUser(
+            @RequestParam(value="gender", required=false) String gender,
+            @RequestParam(value="age", required=false) String age,
+            @RequestParam(value="occupation", required=false) String occupation,
+            @RequestParam(value="genres", required=false) String genres,
+            Model model) {
+
+        List<MovieDto> movies;
+
+        try {
+            UserProfileInputDto inputDto = new UserProfileInputDto(gender, age, occupation, genres);
+            movies = recommendationService.recommendByUserProfile(inputDto);
+            model.addAttribute("movies", movies);
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/users/recommendations.html");
+        return modelAndView;
+    }
+
+    @GetMapping("/movies/recommendations.html")
+    public ModelAndView recommendByTitle(
+            @RequestParam(value="title") String title,
+            @RequestParam(value="year", required=false, defaultValue="-1") int year,
+            @RequestParam(value="limit", required=false, defaultValue="10") int limit,
+            Model model) {
+
+        List<MovieDto> movies = new ArrayList<>();
+
+        try {
+            MovieTitleInputDto inputDto = new MovieTitleInputDto(title, year, limit, movieRepository);
+            movies = recommendationService.recommendByMovieTitle(inputDto);
+            Movie movie = movieRepository.findByTitleIgnoreCase(title).get(0);
+            model.addAttribute("movies", movies);
+            model.addAttribute("title", movie.getTitle());
+            if (year == -1) year = Integer.parseInt(movie.getYear());
+            model.addAttribute("year", year);
+            model.addAttribute("limit", limit);
+        } catch (NonUniqueTitleException e) {
+            // There are more than two movies that satisfy the title & year condition.
+            List<Movie> nonUnique = movieRepository.findByTitleIgnoreCase(title);
+            for (Movie movie : nonUnique) {
+                movies.add(new MovieDto(movie.getTitle(), movie.getYear(), movie.getGenres(), movie.getImdbId(), movie.getPoster()));
+            }
+            model.addAttribute("movies", movies);
+            model.addAttribute("title", title);
+            model.addAttribute("year", year);
+            model.addAttribute("limit", limit);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("/movies/choose.html");
+            return modelAndView;
+        } catch (NotFoundTitleException e) {
+            // There is no title matched movie.
+            e.printStackTrace();
+            model.addAttribute("title", title);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("/movies/title_again.html");
+            return modelAndView;
+        } catch (NotFoundYearException e) {
+            // There is title matched movie but no year matched movie.
+            e.printStackTrace();
+            List<Movie> nonUnique = movieRepository.findByTitleIgnoreCase(title);
+            for (Movie movie : nonUnique) {
+                movies.add(new MovieDto(movie.getTitle(), movie.getYear(), movie.getGenres(), movie.getImdbId(), movie.getPoster()));
+            }
+            model.addAttribute("movies", movies);
+            model.addAttribute("title", title);
+            model.addAttribute("year", year);
+            model.addAttribute("limit", limit);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("/movies/wrong_year.html");
+            return modelAndView;
+        } catch (InvalidInputException e) {
+            // limit or year value is out of proper range.
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/movies/recommendations.html");
+        return modelAndView;
+    }
+
+    @GetMapping("/movies")
+    @ResponseBody
+    public List<Movie> allMovies() {
+        return movieRepository.findAll();
+    }
+}
+package cse364.group18.model;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
+@Document
+@NoArgsConstructor
+@Setter
+@Getter
+public class User {
+
+    private Long userId;
+    private String gender;
+    private int ageGroup;
+    private int occupation;
+    private String zipcode;
+
+    public User(Long userId, String gender, int ageGroup, int occupation, String zipcode) {
+        this.userId = userId;
+        this.gender = gender;
+        this.ageGroup = ageGroup;
+        this.occupation = occupation;
+        this.zipcode = zipcode;
+    }
+}
+package cse364.group18.model;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
+@Document
+@Getter
+@Setter
+@NoArgsConstructor
+public class Rating {
+
+    private Long userId;
+    private Long movieId;
+    private int score;
+    private int timeStamp;
+
+    public Rating(Long userId, Long movieId, int score, int timeStamp) {
+        this.userId = userId;
+        this.movieId = movieId;
+        this.score = score;
+        this.timeStamp = timeStamp;
+    }
+
+}
+package cse364.group18.model;
+
+import javax.persistence.ElementCollection;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Document
+@Getter
+@Setter
+public class Movie {
+
+    private @JsonIgnore Long movieId;
+    private String title;
+    private @JsonIgnore String year;
+    private @JsonIgnore String rated;
+    private @JsonIgnore String released;
+    private @JsonIgnore String runtime;
+    private @JsonIgnore @ElementCollection List<String> genres = new ArrayList<>();
+    private @JsonIgnore String director;
+    private @JsonIgnore String writer;
+    private @JsonIgnore @ElementCollection List<String> actors = new ArrayList<>();
+    private @JsonIgnore String plot;
+    private @JsonIgnore String language;
+    private @JsonIgnore String country;
+    private @JsonIgnore String poster;
+    private @JsonIgnore String imdbRating;
+    private @JsonIgnore String imdbVotes;
+    private @JsonIgnore String imdbId;
+
+    public Movie() {
+    }
+
+    public Movie(Long movieId, String title, String year, String rated, String released, String runtime, List<String> genres, String director, String writer, List<String> actors, String plot, String language, String country, String poster, String imdbRating, String imdbVotes, String imdbId) {
+        this.movieId = movieId;
+        this.title = title;
+        this.year = year;
+        this.rated = rated;
+        this.released = released;
+        this.runtime = runtime;
+        this.genres = genres;
+        this.director = director;
+        this.writer = writer;
+        this.actors = actors;
+        this.plot = plot;
+        this.language = language;
+        this.country = country;
+        this.poster = poster;
+        this.imdbRating = imdbRating;
+        this.imdbVotes = imdbVotes;
+        this.imdbId = imdbId;
+    }
+}
+package cse364.group18;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
+@SpringBootApplication
+public class MovieRecommenderApplication extends SpringBootServletInitializer {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MovieRecommenderApplication.class, args);
+	}
+}
+package cse364.group18.service.core;
+
+import cse364.group18.model.User;
+
+
+public class UserSimilarityScorer {
+
+    private final String gender;
+    private final int age;
+    private final int occupationNum;
+
+    public UserSimilarityScorer(String gender, int age, int occupationNum) {
+        this.gender = gender;
+        this.age = age;
+        this.occupationNum = occupationNum;
+    }
+
+    public int getScore(User user) {
+        int score = 0;
+
+        if ((user.getGender()).equals(this.gender)) {
+            score += 1;
+        }
+
+        if (user.getAgeGroup() == this.age) {
+            score += 1;
+        }
+
+        if (user.getOccupation() == this.occupationNum) {
+            score += 1;
+        }
+
+        return score;
+    }
+}
+
+package cse364.group18.service.core;
+
+
+public class MovieWeightedScorer implements Comparable<MovieWeightedScorer> {
+
+    private int count;
+    private double sum;
+
+    public MovieWeightedScorer() {
+        sum = 0;
+        count = 0;
+    }
+
+    public MovieWeightedScorer(double sum, int count) {
+        this.count = count;
+        this.sum = sum;
+    }
+
+    public void updateRecord(double weightedScore) {
+        this.sum += weightedScore;
+        this.count += 1;
+    }
+
+    public double getAverage() {
+        if (count > 1)
+            return sum / count;
+        else
+            return 0.0;
+    }
+
+    @Override
+    public int compareTo(MovieWeightedScorer score) {
+        return Double.compare(score.getAverage(), this.getAverage());
+    }
+}
+
+package cse364.group18.service;
+
+import cse364.group18.dto.UserProfileInputDto;
+import cse364.group18.model.User;
+import cse364.group18.model.Rating;
+import cse364.group18.model.Movie;
+import cse364.group18.repository.MovieRepository;
+import cse364.group18.repository.RatingRepository;
+import cse364.group18.repository.RatingRepositoryAdapter;
+import cse364.group18.repository.UserRepository;
+import cse364.group18.service.core.UserSimilarityScorer;
+
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+
+@Service
+public class UserProfileBasedRecommender {
+
+    private final RatingRepository ratingRepository;
+    private final MovieRepository movieRepository;
+    private final UserRepository userRepository;
+    private final RatingRepositoryAdapter ratingRepositoryAdapter;
+
+    public UserProfileBasedRecommender(MovieRepository movieRepository, UserRepository userRepository, RatingRepository ratingRepository) {
+        this.movieRepository = movieRepository;
+        this.userRepository = userRepository;
+        this.ratingRepository = ratingRepository;
+        this.ratingRepositoryAdapter = new RatingRepositoryAdapter(ratingRepository);
+    }
+
+    public double calculateAverageRating(ArrayList<Rating> ratings) {
+        int totalScore = 0;
+        int totalNumber = 0;
+
+        for (Rating rating : ratings) {
+            totalScore += rating.getScore();
+            totalNumber += 1;
+        }
+
+        if (totalNumber > 0)
+            return (double) totalScore / (double) totalNumber;
+        else
+            return 0.0;
+    }
+
+    public double calculateWeightedAverage(HashMap<Integer, ArrayList<Rating>> groupedRatingMap) {
+        int totalWeights = 0;
+        double totalScores = 0.0;
+        double weightedAverageScore = 0.0;
+
+        for (Map.Entry<Integer, ArrayList<Rating>> keyValuePair : groupedRatingMap.entrySet()) {
+            ArrayList<Rating> ratings = keyValuePair.getValue();
+
+            if (!ratings.isEmpty()) {
+                double groupAvg = calculateAverageRating(ratings);
+                int similarityScore = keyValuePair.getKey();
+                totalWeights += similarityScore;
+                totalScores += groupAvg;
+            }
+        }
+
+        if (totalWeights > 0) {
+            weightedAverageScore = totalScores / totalWeights;
+        }
+
+        return weightedAverageScore;
+    }
+
+    private HashMap<Integer, ArrayList<Rating>> groupedRatingsBySimilarity(
+            List<Rating> ratingList, HashMap<Long, User> userMap, String gender, int ageGroup, int occupationNum) {
+
+        UserSimilarityScorer userSimilarityScorer = new UserSimilarityScorer(gender, ageGroup, occupationNum);
+        HashMap<Integer, ArrayList<Rating>> groupedRatingMap = new HashMap<>();
+
+        for (Rating rating : ratingList) {
+            User user = userMap.get(rating.getUserId());
+            int similarityScore = userSimilarityScorer.getScore(user);
+
+            groupedRatingMap.putIfAbsent(similarityScore, new ArrayList<>());
+            groupedRatingMap.get(similarityScore).add(rating);
+        }
+
+        return groupedRatingMap;
+    }
+
+    public HashMap<Long, ArrayList<Rating>> loadGroupedRatingsByMovieId() {
+        HashMap<Long, ArrayList<Rating>> groupedRatingMap = new HashMap<>();
+
+        List<Rating> ratingList = ratingRepositoryAdapter.findAll();
+        if (ratingList.isEmpty())
+            ratingList = ratingRepository.findAll();
+
+        for (Rating rating : ratingList) {
+            Long movieId = rating.getMovieId();
+            groupedRatingMap.putIfAbsent(movieId, new ArrayList<>());
+            groupedRatingMap.get(movieId).add(rating);
+        }
+
+        return groupedRatingMap;
+    }
+
+    private List<Movie> loadRequestedGenreMovies(List<String> genreNames){
+        List<Movie> movieList;
+
+        if (genreNames.size() > 0) {
+            movieList = movieRepository.findByGenresIn(genreNames);
+        } else {
+            movieList = movieRepository.findAll();
+        }
+
+        return movieList;
+    }
+
+    private HashMap<Long, User> loadAllUsers() {
+        HashMap<Long, User> userMap = new HashMap<>();
+        List<User> userList = userRepository.findAll();
+
+        for (User user : userList) {
+            userMap.put(user.getUserId(), user);
+        }
+        return userMap;
+    }
+
+    public HashMap<Long, Double> getMovieScoreMap(UserProfileInputDto input){
+        /*
+        Weighted rating map is returned.
+         */
+        HashMap<Long, Double> weightedRatings = new HashMap<>();
+        HashMap<Long, ArrayList<Rating>> ratingsGroupedByMovieId = loadGroupedRatingsByMovieId();
+        List<Movie> movieList = loadRequestedGenreMovies(input.getGenres());
+        HashMap<Long, User> userMap  = loadAllUsers();
+
+        // Calculate movie by movie weighted average score.
+        for (Movie movie : movieList) {
+            List<Rating> ratingList = ratingsGroupedByMovieId.get(movie.getMovieId());
+
+            if (ratingList == null || ratingList.isEmpty()) {
+                continue;
+            }
+
+            HashMap<Integer, ArrayList<Rating>> groupedRatingsBySimilarity
+                    = groupedRatingsBySimilarity(ratingList, userMap, input.getGender(),
+                    input.getAgeGroup(), input.getOccupationNum());
+
+            double weightedAverageScore = calculateWeightedAverage(groupedRatingsBySimilarity);
+            weightedRatings.put(movie.getMovieId(), weightedAverageScore);
+        }
+
+        return weightedRatings;
+    }
+}
+
+package cse364.group18.service;
+
+import cse364.group18.dto.MovieDto;
+import cse364.group18.dto.MovieTitleInputDto;
+import cse364.group18.dto.UserProfileInputDto;
+import cse364.group18.exception.NotFoundException;
+import cse364.group18.model.Movie;
+import cse364.group18.repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+
+@Service
+public class RecommendationServiceImpl implements RecommendationService {
+
+    MovieRepository movieRepository;
+    UserProfileBasedRecommender userRecommender;
+    MovieTitleBasedRecommender titleRecommender;
+
+    @Autowired
+    RecommendationServiceImpl(MovieRepository movieRepository, UserProfileBasedRecommender userProfileBasedRecommender, MovieTitleBasedRecommender movieTitleBasedRecommender) {
+        this.movieRepository = movieRepository;
+        this.userRecommender = userProfileBasedRecommender;
+        this.titleRecommender = movieTitleBasedRecommender;
+    }
+
+    public List<MovieDto> recommendByMovieTitle(MovieTitleInputDto inputDto) {
+        HashMap<Long, Double> movieScoreMap = titleRecommender.getMovieScoreMap(inputDto);
+        List<Long> sortedMovieIdList = sortByValue(movieScoreMap);
+        return topNMovieDtoList(sortedMovieIdList, inputDto.getLimit());
+    }
+
+    public List<MovieDto> recommendByUserProfile(UserProfileInputDto inputDto) {
+        HashMap<Long, Double> movieScoreMap = userRecommender.getMovieScoreMap(inputDto);
+        List<Long> sortedMovieIdList = sortByValue(movieScoreMap);
+        return topNMovieDtoList(sortedMovieIdList,10);
+    }
+
+    private MovieDto createMoviePosterOutputDto(Movie movie) throws NotFoundException {
+        /*
+            If there is no movie poster, null value is returned.
+         */
+        String imdbId = movie.getImdbId();
+        String link = "http://www.imdb.com/title/" + imdbId;
+        String poster;
+        try {
+            poster = movie.getPoster();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            throw new NotFoundException("Not found movie poster: ", movie.getTitle());
+        }
+        return new MovieDto(movie.getTitle(), movie.getYear(), movie.getGenres(), link, poster);
+    }
+
+    private List<MovieDto> topNMovieDtoList(List<Long> sortedMovieIdList, int limit) {
+        List<MovieDto> movieDtoList = new ArrayList<>();
+        MovieDto outputDto;
+        int count = 0;
+
+        for (Long movieId : sortedMovieIdList) {
+            Movie movie = movieRepository.findByMovieId(movieId);
+
+            // Filter out less popular movie
+            if (Integer.parseInt(movie.getImdbVotes()) < 100000) {
+                continue;
+            }
+
+            // There's chance to fail finding the movie poster.
+            try {
+                outputDto = createMoviePosterOutputDto(movie);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+                continue;
+            }
+
+            movieDtoList.add(outputDto);
+            count++;
+
+            if (count == limit)
+                break;
+        }
+
+        return movieDtoList;
+    }
+
+    public static List<Long> sortByValue(final Map<Long, Double> map) {
+        /*
+            Sort by value in descending order.
+         */
+        List<Long> list = new ArrayList<>(map.keySet());
+
+        list.sort((Comparator<? super Long>) (o1, o2) -> {
+            Double v1 = map.get(o1);
+            Double v2 = map.get(o2);
+            return (v2).compareTo(v1);
+        });
+
+        return list;
+    }
+}
+
+package cse364.group18.service;
+
+import cse364.group18.dto.MovieTitleInputDto;
+import cse364.group18.exception.NonUniqueTitleException;
+import cse364.group18.exception.NotFoundException;
+import cse364.group18.exception.NotFoundTitleException;
+import cse364.group18.model.Rating;
+import cse364.group18.model.Movie;
+import cse364.group18.repository.*;
+import cse364.group18.service.core.MovieWeightedScorer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+
+@Service
+public class MovieTitleBasedRecommender {
+
+    private final RatingRepositoryAdapter ratingRepositoryAdapter;
+    private final RatingRepository ratingRepository;
+    private final MovieRepository movieRepository;
+
+    @Autowired
+    public MovieTitleBasedRecommender(MovieRepository movieRepository, RatingRepository ratingRepository) {
+        this.movieRepository = movieRepository;
+        this.ratingRepository = ratingRepository;
+        this.ratingRepositoryAdapter = new RatingRepositoryAdapter(ratingRepository);
+    }
+
+    private Long findMovieId(String title, int year){
+        Long movieId;
+        if (year == -1) {
+            List<Movie> movie = movieRepository.findByTitleIgnoreCase(title);
+            if (movie.isEmpty()) {
+                throw new NotFoundTitleException("Not found title: ", title);
+            } else if (movie.size() > 1) {
+                throw new NonUniqueTitleException("Non-unique title: ", title);
+            } else {
+                movieId = movie.get(0).getMovieId();
+            }
+        } else {
+            Optional<Movie> movieOpt = movieRepository.findByTitleAndYear(title, Integer.toString(year));
+            if (movieOpt.isEmpty()) {
+                throw new NotFoundException("Failed to find a matched movie: ", title);
+            } else {
+                movieId = movieOpt.get().getMovieId();
+            }
+        }
+        return movieId;
+    }
+
+    public HashMap<Long, Double> getMovieScoreMap(MovieTitleInputDto inputDto) {
+        HashMap<Long, MovieWeightedScorer> movieScoreMap = new HashMap<>();
+        HashMap<Long, Double> flattenedMovieScoreMap = new HashMap<>();
+
+        String title = inputDto.getTitle();
+        int year = inputDto.getYear();
+
+        Long movieId = findMovieId(title, year);
+        List<Rating> moviesRatingList = ratingRepository.findByMovieId(movieId);
+
+        for (Rating rating : moviesRatingList) {
+            Long userId = rating.getUserId();
+            List<Rating> usersRatingList = ratingRepositoryAdapter.findByUserId(userId);
+
+            double weight = rating.getScore() / 5.0;
+
+            for (Rating userRating : usersRatingList) {
+                Long mId = userRating.getMovieId();
+
+                // 찾는 영화 mId 가 movieScore 안에 없다
+                if (!movieScoreMap.containsKey(mId)) {
+                    // movieScore 안에 추가
+                    movieScoreMap.put(mId, new MovieWeightedScorer(userRating.getScore() * weight, 1));
+                } else {
+                    // 영화 mId가 이미 movieScore 안에 존재한다
+                    // mId 에 대응하는 value 를 가져와서
+                    MovieWeightedScorer scorer = movieScoreMap.get(mId);
+                    scorer.updateRecord(userRating.getScore() * weight);
+                }
+            }
+        }
+
+        for (Map.Entry<Long, MovieWeightedScorer> entry: movieScoreMap.entrySet()) {
+            Long mid = entry.getKey();
+            Double avgScore = entry.getValue().getAverage();
+            flattenedMovieScoreMap.put(mid, avgScore);
+        }
+
+        return flattenedMovieScoreMap;
+    }
+}
+
+package cse364.group18.service;
+
+import cse364.group18.dto.MovieDto;
+import cse364.group18.dto.MovieTitleInputDto;
+import cse364.group18.dto.UserProfileInputDto;
+
+import java.util.List;
+
+
+public interface RecommendationService {
+
+    List<MovieDto> recommendByUserProfile(UserProfileInputDto inputDto);
+    List<MovieDto> recommendByMovieTitle(MovieTitleInputDto inputDto);
+}
+
+package cse364.group18.exception;
+
+
+public class NotFoundYearException extends RuntimeException {
+
+    public NotFoundYearException(String message, String status) {
+        super(message + status);
+    }
+}
+
+package cse364.group18.exception;
+
+public class NonUniqueTitleException extends RuntimeException {
+
+    public NonUniqueTitleException(String message, String status) {
+        super(message + status);
+    }
+}
+
+package cse364.group18.exception;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+
+@RestControllerAdvice
+public class InvalidInputAdvice extends RuntimeException {
+
+    @ExceptionHandler(InvalidInputException.class)
+    InvalidInputJsonResponse InvalidInputHandler(InvalidInputException ex) {
+        InvalidInputJsonResponse error = new InvalidInputJsonResponse(ex.getMessage());
+        return error;
+    }
+}
+package cse364.group18.exception;
+
+public class NotFoundTitleException extends RuntimeException {
+
+    public NotFoundTitleException(String message, String status) {
+        super(message + status);
+    }
+}
+package cse364.group18.exception;
+
+public class InvalidInputJsonResponse {
+
+    private String error;
+
+    public InvalidInputJsonResponse(String error) {
+        this.error = error;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+}
+
+package cse364.group18.exception;
+
+public class InvalidInputException extends RuntimeException {
+
+    public InvalidInputException(String message, String status) {
+        super(message + status);
+    }
+}
+package cse364.group18.exception;
+
+public class NotFoundException extends RuntimeException {
+
+    public NotFoundException(String message, String status) {
+        super(message + status);
+    }
+}
+

@@ -1,0 +1,268 @@
+@font-face {
+    font-family: "Netflix Sans";
+    font-display: optional;
+    src: url("../fonts/NetflixSans_W_Rg.woff") format("woff");
+    src: url("../fonts/NetflixSansRegular.ttf") format("truetype");
+}
+
+body {
+    background-color: #141414;
+    color: #f5f5f1;
+    font-family: "Netflix Sans", "Bebas Neue", Helvetica, "Helvetica Neue", sans-serif;
+    font-weight: normal;
+    font-size: 17px;
+}
+
+a, a:visited, a:active {
+    text-decoration: none;
+}
+
+.navbar {
+    vertical-align: middle;
+    overflow: hidden;
+    background-color: #141414;
+    padding: 15px 0 15px 0;
+    z-index: 10;
+}
+
+.dummy {
+    padding: 30px 0 0 30px;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f5f5f1;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navbar:active {
+    font-weight: bold;
+}
+
+.logo {
+    font: icon;
+    font-size: 30px;
+    padding: 0 20px 0 30px;
+}
+
+#home, .dropdown, .search-container {
+    padding: 5px 20px 5px 30px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block
+}
+
+.dropdown .drop-button {
+    font-size: 17px;
+    border: .5px solid #141414;
+    color: #f5f5f1;
+    background-color: #141414;
+}
+
+.navbar a:hover, .dropdown:hover .drop-button {
+    color: grey;
+}
+
+.dropdown-content {
+    position: fixed;
+    display: none;
+    min-width: 100px;
+    z-index: 11;
+}
+
+.dropdown-content a {
+    float: none;
+    color: #f5f5f1;
+    background-color: #141414;
+    padding: 20px 30px 10px 30px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    font-size: 15px;
+}
+
+.dropdown-content a:hover {
+    color: grey;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.navbar a:hover, .dropdown:hover .drop-button {
+    color: grey;
+}
+
+.search-container {
+    line-height: 20px;
+    float: right;
+    height: 100%;
+    display: table;
+}
+
+.search-container input[type=text] {
+    border: .5px solid #f5f5f1;
+    color: #141414;
+    background-color: #f5f5f1;
+}
+
+.search-container button {
+    float: right;
+    border: .5px solid #141414;
+    padding: 0 5px;
+    background: #141414;
+    color: #f5f5f1;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    color: #f5f5f1;
+}
+
+.search-container input:focus {
+    outline: none;
+}
+
+.search-container input::placeholder {
+    color: grey;
+}
+
+.recommend button {
+    background-color: #141414;
+    color: #f5f5f1;
+    border: none;
+}
+
+.recommend input {
+    color: #141414;
+    border: .5px solid #f5f5f1;
+    padding: 3px;
+}
+
+.recommend input[type=text] {
+    font-size: 15px;
+}
+
+.recommend input:focus {
+    outline: none;
+}
+
+.recommend input::placeholder {
+    color: grey;
+}
+
+.container {
+    padding: 0 30px 0 30px;
+}
+
+.movie-genre, .title {
+    font-size: 35px;
+    position: relative;
+    left: auto;
+}
+
+.out-container {
+    text-align: center;
+    display: block;
+}
+
+.in-container {
+    position: relative;
+    display: inline-block;
+    padding: 10px 0 60px 0;
+    z-index: 1;
+}
+
+.in-container:hover, .in-container:active {
+    z-index: 9;
+}
+
+.in-container img {
+    position: relative;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    width: 180px;
+    height: 285px;
+}
+
+.in-container img:hover, .in-container img:active, .in-container .information {
+    transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+}
+
+.in-container:hover .information {
+    opacity: 1;
+}
+
+.title-again {
+    text-decoration: none;
+    font-size: 20px;
+    color: #f5f5f1;
+}
+
+.title-again:hover .title-again:active {
+    color: grey;
+}
+
+.information {
+    position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    width: 180px;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    opacity:0;
+    font-size: 15px;
+    text-align: center;
+}
+
+.select2-search__field::placeholder{
+    font-family: "Netflix Sans";
+    font-size: 15px;
+    color: grey;
+}
+
+/* Input field */
+.select2-selection__rendered {
+    color: #141414;
+    font-size: 15px;
+}
+
+/* Each result */
+.select2-results {
+    color: #141414;
+    font-size: 15px;
+}
+
+/* Selected option */
+.select2-results__option[aria-selected=true] {
+    color: #141414;
+}
+
+.content {
+    padding: 16px;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.sticky + .content {
+    padding-top: 60px;
+}

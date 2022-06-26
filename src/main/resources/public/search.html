@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="#top">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search" style="float: left;">
+                <button type="submit" style="float: left;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

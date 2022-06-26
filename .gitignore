@@ -1,0 +1,49 @@
+# Directories
+target/
+.idea
+
+# macOS files
+.DS_Store
+
+# Java class files
+*.class
+
+# IntelliJ
+*.iml
+*.xml
+!pom.xml
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+>>>>>>> 45ac80b99c6f6e9c7f34b5ec5c304c4cebda3477

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommend by Movie</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar" id="topnav">
+    <div>
+        <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+    </div>
+    <div class="header">
+        <a id="home" href="/index.html">Home</a>
+    </div>
+    <div class="dropdown">
+        <button class="drop-button">Recommend
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/users.html">By User</a>
+            <a href="/movies.html">By Title</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <form action="/search.html">
+            <input type="text" placeholder="Titles, people, genres" name="search">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="dummy"></div>
+
+<div class="container">
+    <span class="title" th:text="'There is no ' + ${title} + ' released in ' + ${year} + ', but here is ' + ${title} + ' released in different year'"></span>
+    <div class="dummy"></div>
+    <div class="out-container">
+        <div class="in-container" th:each="movie: ${movies}">
+            <a th:href="@{/movies/recommendations.html(title=${movie.getTitle()}, year=${movie.getYear()}, limit=${limit})}" class="poster">
+                <img th:src="${movie.getPoster()}" th:alt="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'">
+            </a>
+            <div class="information" th:text="${movie.getTitle()} + ' (' + ${movie.getYear()} + ')'"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

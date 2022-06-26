@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" id="top">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="navbar" id="topnav">
+        <div>
+            <a href="/index.html" class="logo" style="color: #e50914;">RecomME</a>
+        </div>
+        <div class="header">
+            <a id="home" href="/index.html">Home</a>
+        </div>
+        <div class="dropdown">
+            <button class="drop-button">Recommend
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/users.html">By User</a>
+                <a href="/movies.html">By Title</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form action="/search.html">
+                <input type="text" placeholder="Titles, people, genres" name="search">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dummy"></div>
+
+    <div class="container">
+    <span class="title">Recommendation based on Movie</span>
+        <div class="dummy"></div>
+        <form class="recommend" id="titleForm" action="/movies/recommendations.html" onsubmit="return validateForm()" method="GET">
+            <label for="title">Title: </label>
+            <input class="field" type="text" placeholder="Enter Title" id="title" name="title" required>
+            <label for="year">Year: </label>
+            <input class="field" type="number" min="1900" max="2021" placeholder="Enter Year" id="year" name="year">
+            <label for="limit">Limit: </label>
+            <input class="field" type="number" min="1" max="100" placeholder="Enter Limit" id="limit" name="limit">
+            <button class="button" type="submit">Recommend</button>
+        </form>
+    </div>
+
+    <script>
+        // Stick Navbar
+        window.onscroll = function() {myFunction()};
+
+        var navbar = document.getElementById("topnav");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+</body>
+</html>
